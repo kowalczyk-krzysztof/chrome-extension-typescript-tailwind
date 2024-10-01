@@ -1,21 +1,17 @@
-# <img src="public/icons/icon_48.png" width="45" align="left"> New Project
+# Chrome Extension template with Typescript, Tailwind
 
-My Chrome Extension
+## Test the extension
 
-## Features
+1. `npm run dev`
+2. Open [chrome://extensions](chrome://extensions).
+3. Enable developer mode (top right of page).
+4. Click "Load unpacked extension" (top left page).
+5. Select `build` directory.
 
-- Feature 1
-- Feature 2
+## Bundle the extension
 
-## Install
+To package the source code into static files for the Chrome webstore, execute `npm run build`.
 
-[**Chrome** extension]()
+## Documentation
 
-## Contribution
-
-Suggestions and pull requests are welcomed!.
-
----
-
-This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
-
+Refer to [the Chrome developer documentation](https://developer.chrome.com/docs/extensions/mv3/getstarted/) to get started.

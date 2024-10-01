@@ -1,20 +1,24 @@
-'use strict';
+'use strict'
 
-const SizePlugin = require('size-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import path from 'path'
+import { fileURLToPath } from 'url'
+import SizePlugin from 'size-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CopyPlugin from 'copy-webpack-plugin'
+import PATHS from './paths.js'
 
-const PATHS = require('./paths');
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-// To re-use webpack configuration across templates,
-// CLI maintains a common webpack configuration file - `webpack.common.js`.
-// Whenever user creates an extension, CLI adds `webpack.common.js` file
-// in template's `config` folder
-const common = {
+export default {
+  mode: 'production',
+  entry: {
+    app: path.resolve(__dirname, '..', 'src', 'app.ts'),
+    background: path.resolve(__dirname, '..', 'src', 'background.ts'),
+  },
   output: {
-    // the build folder to output bundles and assets in.
-    path: PATHS.build,
-    // the filename template for entry chunks
+    path: PATHS.build || path.join(__dirname, '../build'),
     filename: '[name].js',
   },
   devtool: 'source-map',
@@ -23,14 +27,24 @@ const common = {
     errors: true,
     builtAt: true,
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
   module: {
     rules: [
-      // Help webpack in understanding CSS files imported in .js files
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+        ],
       },
-      // Check for images imported in .js files and
       {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
@@ -46,22 +60,20 @@ const common = {
     ],
   },
   plugins: [
-    // Print file sizes
     new SizePlugin(),
-    // Copy static assets from `public` folder to `build` folder
     new CopyWebpackPlugin({
       patterns: [
         {
           from: '**/*',
           context: 'public',
         },
-      ]
+      ],
     }),
-    // Extract CSS into separate files
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: 'index.css',
+    }),
+    new CopyPlugin({
+      patterns: [{ from: '.', to: '.', context: 'public' }],
     }),
   ],
-};
-
-module.exports = common;
+}
