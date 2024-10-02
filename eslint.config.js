@@ -29,7 +29,16 @@ export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.r
     'no-var': 'error',
     'no-mixed-spaces-and-tabs': [2, 'smart-tabs'],
   },
-  ignores: ['build', 'eslint.config.json', 'node_modules', 'public', 'tailwind.config.js', 'webpack.config.js'],
+  ignores: [
+    'build',
+    'eslint.config.json',
+    'node_modules',
+    'public',
+    'tailwind.config.js',
+    'webpack.config.js',
+    'webpack.dev.js',
+    'webpack.common.js',
+  ],
   files: ['**/*.js', '**/*.ts'],
   plugins: {},
 })

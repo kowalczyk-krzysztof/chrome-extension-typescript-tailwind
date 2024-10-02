@@ -1,34 +1,25 @@
-'use strict'
-
 import path from 'path'
 import { fileURLToPath } from 'url'
-import SizePlugin from 'size-plugin'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import CopyPlugin from 'copy-webpack-plugin'
-import PATHS from './paths.js'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export default {
-  mode: 'production',
+const PATHS = {
+  src: path.resolve(__dirname, './src'),
+  build: path.resolve(__dirname, './build'),
+}
+
+const commonConfig = {
   entry: {
-    app: path.resolve(__dirname, '..', 'src', 'app.ts'),
-    background: path.resolve(__dirname, '..', 'src', 'background.ts'),
+    app: `${PATHS.src}/app.ts`,
+    background: `${PATHS.src}/background.ts`,
   },
   output: {
-    path: PATHS.build || path.join(__dirname, '../build'),
+    path: PATHS.build,
     filename: '[name].js',
-  },
-  devtool: 'source-map',
-  stats: {
-    all: false,
-    errors: true,
-    builtAt: true,
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
@@ -59,21 +50,23 @@ export default {
       },
     ],
   },
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
   plugins: [
-    new SizePlugin(),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'popup.html',
+    }),
+    new MiniCssExtractPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: '**/*',
-          context: 'public',
+          from: 'public',
         },
       ],
     }),
-    new MiniCssExtractPlugin({
-      filename: 'index.css',
-    }),
-    new CopyPlugin({
-      patterns: [{ from: '.', to: '.', context: 'public' }],
-    }),
   ],
 }
+
+export default commonConfig
