@@ -8,9 +8,6 @@ export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.r
   },
   languageOptions: {
     parser: tseslint.parser,
-    parserOptions: {
-      project: true,
-    },
     ecmaVersion: 2022,
     sourceType: 'module',
     globals: {
@@ -40,5 +37,4 @@ export default tseslint.config(eslint.configs.recommended, ...tseslint.configs.r
     'webpack.common.js',
   ],
   files: ['**/*.js', '**/*.ts'],
-  plugins: {},
 })

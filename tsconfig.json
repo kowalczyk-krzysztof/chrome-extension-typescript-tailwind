@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "moduleResolution": "NodeNext",
     "strict": true,
     "target": "esnext",
-    "module": "esnext",
+    "module": "NodeNext",
     "esModuleInterop": true,
     "sourceMap": true,
     "rootDir": "src",

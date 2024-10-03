@@ -1,3 +1,4 @@
+/* eslint-disable */
 import path from 'path'
 import { fileURLToPath } from 'url'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
